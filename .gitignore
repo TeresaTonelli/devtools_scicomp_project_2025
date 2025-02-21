@@ -174,3 +174,4 @@ cython_debug/
 #Ignore extension .dat and .data
 .dat
 .data
+data/*

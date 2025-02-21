@@ -1,0 +1,49 @@
+Function: distance_numpy at line 18
+
+Line #      Hits         Time  Per Hit   % Time  Line Contents
+==============================================================
+    18                                           @line_profiler.profile
+    19                                           def distance_numpy(point1, point2):
+    20     19670      43702.6      2.2     12.5          tmp_d = point1 - point2
+    21     19670      35268.1      1.8     10.1          tmp_d = np.square(tmp_d)
+    22     19670     218164.5     11.1     62.5          tmp_d = np.sum(tmp_d)
+    23     19670      51968.9      2.6     14.9          return np.sqrt(tmp_d)
+
+Total time: 0.513453 s
+File: /root/devtools_scicomp_teresa/devtools_scicomp_project_2025/src/pyclassify/classifier.py
+Function: _get_k_nearest_neighbors at line 21
+
+Line #      Hits         Time  Per Hit   % Time  Line Contents
+==============================================================
+    21                                                  @line_profiler.profile
+    22                                                  def _get_k_nearest_neighbors(self, X, y, x):
+    23       281     500683.5   1781.8     97.5                 dist_list = [(idx, self.distance(p,x)) for idx, p in enumerate(X)]    #utils.distance
+    24       281      11116.0     39.6      2.2                 dist_list.sort(key=lambda d: d[1])
+    25       281       1015.8      3.6      0.2                 idx_list = [t[0] for t in dist_list[:self.k]]
+    26       281        637.9      2.3      0.1                 return [y[i] for i in idx_list]
+
+Total time: 0.528431 s
+File: /root/devtools_scicomp_teresa/devtools_scicomp_project_2025/src/pyclassify/classifier.py
+Function: __call__ at line 28
+
+Line #      Hits         Time  Per Hit   % Time  Line Contents
+==============================================================
+    28                                                  @line_profiler.profile
+    29                                                  def __call__(self, data, new_points):
+    30         1          1.9      1.9      0.0                 X = data[0]
+    31         1          0.5      0.5      0.0                 y = data[1]
+    32         1          0.7      0.7      0.0                 y_pred = []
+    33         1          1.1      1.1      0.0                 if self.backhand == "numpy":
+    34         1        241.2    241.2      0.0                         X = np.array(X)
+    35         1        913.5    913.5      0.2                         new_points = np.array(new_points)
+    36       282        296.2      1.1      0.1                 for x in new_points:
+    37       281     516331.4   1837.5     97.7                         y_k_ngh = self._get_k_nearest_neighbors(X, y, x)
+    38       281      10369.5     36.9      2.0                         y_label = utils.majority_vote(y_k_ngh)
+    39       281        274.8      1.0      0.1                         y_pred.append(y_label)
+    40         1          0.3      0.3      0.0                 return y_pred
+
+  0.00 seconds - /root/devtools_scicomp_teresa/devtools_scicomp_project_2025/src/pyclassify/utils.py:9 - distance
+  0.00 seconds - /root/devtools_scicomp_teresa/devtools_scicomp_project_2025/src/pyclassify/utils.py:26 - majority_vote
+  0.35 seconds - /root/devtools_scicomp_teresa/devtools_scicomp_project_2025/src/pyclassify/utils.py:18 - distance_numpy
+  0.51 seconds - /root/devtools_scicomp_teresa/devtools_scicomp_project_2025/src/pyclassify/classifier.py:21 - _get_k_nearest_neighbors
+  0.53 seconds - /root/devtools_scicomp_teresa/devtools_scicomp_project_2025/src/pyclassify/classifier.py:28 - __call__

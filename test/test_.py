@@ -24,3 +24,38 @@ def test_constr():
 	k = 2
 	cf = kNN(k)
 	assert cf.k == k
+
+@pytest.mark.parametrize(
+	"k, backhand, expected_k, expected_backhand",
+	[
+		(5, "plain", 5, "plain"),
+		(5, "numpy", 5, "numpy"),
+	]
+)
+def test_kNN_constructor(k, backhand, expected_k, expected_backhand):
+	cf = kNN(k, backhand)
+	assert cf.k == expected_k
+	assert cf.backhand == expected_backhand
+
+
+@pytest.mark.parametrize(
+        "k, backhand",
+        [
+                ("5", "plain"),
+                (5.25, "numpy"),
+        ]
+)
+def test_kNN_TypeError(k, backhand):
+	with pytest.raises(TypeError):
+		cf = kNN(k, backhand)
+
+
+@pytest.mark.parametrize(
+        "k, backhand",
+        [
+                (5, "p"),
+        ]
+)
+def test_kNN_ValueError(k, backhand):
+        with pytest.raises(ValueError):
+                cf = kNN(k, backhand)

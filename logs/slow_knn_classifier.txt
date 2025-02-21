@@ -1,0 +1,49 @@
+Total time: 0.689647 s
+File: /root/devtools_scicomp_teresa/devtools_scicomp_project_2025/src/pyclassify/utils.py
+Function: distance at line 8
+
+Line #      Hits         Time  Per Hit   % Time  Line Contents
+==============================================================
+     8                                           @line_profiler.profile
+     9                                           def distance(point1, point2):
+    10     19670      15980.1      0.8      2.3         n = max(len(point1), len(point2))
+    11     19670       6272.0      0.3      0.9         d = 0
+    12     19670       7024.3      0.4      1.0         n = len(point1)
+    13    688450     213049.4      0.3     30.9         for i in range(n):
+    14    668780     437436.6      0.7     63.4                 d += (point1[i] - point2[i])**2
+    15     19670       9884.1      0.5      1.4         return sqrt(d)
+
+Total time: 1.34255 s
+File: /root/devtools_scicomp_teresa/devtools_scicomp_project_2025/src/pyclassify/classifier.py
+Function: _get_k_nearest_neighbors at line 12
+
+Line #      Hits         Time  Per Hit   % Time  Line Contents
+==============================================================
+    12                                                  @line_profiler.profile
+    13                                                  def _get_k_nearest_neighbors(self, X, y, x):
+    14       281    1331825.8   4739.6     99.2                 dist_list = [(idx, utils.distance(p,x)) for idx, p in enumerate(X)]
+    15       281       8831.5     31.4      0.7                 dist_list.sort(key=lambda d: d[1])
+    16       281       1172.0      4.2      0.1                 idx_list = [t[0] for t in dist_list[:self.k]]
+    17       281        717.6      2.6      0.1                 return [y[i] for i in idx_list]
+
+Total time: 1.35446 s
+File: /root/devtools_scicomp_teresa/devtools_scicomp_project_2025/src/pyclassify/classifier.py
+Function: __call__ at line 19
+
+Line #      Hits         Time  Per Hit   % Time  Line Contents
+==============================================================
+    19                                                  @line_profiler.profile
+    20                                                  def __call__(self, data, new_points):
+    21         1          2.5      2.5      0.0                 X = data[0]
+    22         1          0.6      0.6      0.0                 y = data[1]
+    23         1          1.0      1.0      0.0                 y_pred = []
+    24       282        155.5      0.6      0.0                 for x in new_points:
+    25       281    1345138.0   4787.0     99.3                         y_k_ngh = self._get_k_nearest_neighbors(X, y, x)
+    26       281       8892.4     31.6      0.7                         y_label = utils.majority_vote(y_k_ngh)
+    27       281        266.1      0.9      0.0                         y_pred.append(y_label)
+    28         1          0.2      0.2      0.0                 return y_pred
+
+  0.00 seconds - /root/devtools_scicomp_teresa/devtools_scicomp_project_2025/src/pyclassify/utils.py:17 - majority_vote
+  0.69 seconds - /root/devtools_scicomp_teresa/devtools_scicomp_project_2025/src/pyclassify/utils.py:8 - distance
+  1.34 seconds - /root/devtools_scicomp_teresa/devtools_scicomp_project_2025/src/pyclassify/classifier.py:12 - _get_k_nearest_neighbors
+  1.35 seconds - /root/devtools_scicomp_teresa/devtools_scicomp_project_2025/src/pyclassify/classifier.py:19 - __call__
